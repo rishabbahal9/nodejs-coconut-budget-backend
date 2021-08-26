@@ -6,7 +6,7 @@ const router=express.Router()
 router.get('/',(req,res,next)=>{
     res.send("Home")
 })
-router.get('/currentMonthTransactions',controller.currentMonthTransactions)
+router.get('/getMonthlyTransactions/:dateObj',controller.getMonthlyTransactions)
 router.get('/getTransaction/:transactionId',controller.getTransaction)
 router.post('/postNewTransactions',controller.postNewTransaction)
 router.post('/deleteTransaction',controller.deleteTransaction)

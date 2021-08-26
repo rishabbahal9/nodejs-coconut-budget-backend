@@ -1,11 +1,16 @@
 const Transaction = require("../models/transaction")
 
-exports.currentMonthTransactions=(req,res,next)=>{
-    dateNow=new Date()
+const lastDayOfMonth = (y,m)=>{
+    return  new Date(y, m +1, 0).getDate();
+}
+exports.getMonthlyTransactions=(req,res,next)=>{
+    console.log('req.params.dateObj')
+    console.log(req.params.dateObj)
+    dateNow=new Date(req.params.dateObj*1)
     currentYear=dateNow.getFullYear()
     currentMonth=dateNow.getMonth()
     currentDate=dateNow.getDate()
-    Transaction.find({date: {$gte:new Date(currentYear,currentMonth,01),$lte:new Date(currentYear,currentMonth,currentDate,23,59)}})
+    Transaction.find({date: {$gte:new Date(currentYear,currentMonth,01),$lte:new Date(currentYear,currentMonth,lastDayOfMonth(currentYear,currentMonth),23,59)}})
     .sort({date: 1})
     .then(transaction=>{
         console.log("Transaction:")
