@@ -1,0 +1,123 @@
+openapi: 3.0.0
+info:
+  title: Coconutc Budget
+  description: API of coconutc Budget backend
+  version: 1.0.0
+  contact:
+    name: Rishab Bahal
+    email: rishabbahal@gmail.com
+
+servers:
+  - url: http://ec2-13-127-202-155.ap-south-1.compute.amazonaws.com:3001
+    description: Live production server  
+  - url: http://localhost:3001
+    description: Local development server
+
+paths:
+  /currentMonthTransactions:
+    get:
+      tags:
+        - Transactions
+      summary:
+        Gives back all transactions of current month
+      description:
+        Calculates present month and gives back all transactions of current month.
+      responses:
+        '200':
+          description: No problem in returning transactions of current month.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction:
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/Transaction'
+  
+  /getTransaction/{transactionId}:
+    get:
+      tags:
+        - Transactions
+      summary: Retrieves a single transaction
+      description: Retrieves a single transaction by taking transactionId as a parameter.
+      parameters:
+        - in: path
+          name: transactionId
+          schema:
+            type: string
+          required: true
+          description: transactionId of transaction to be retrieved
+      responses:
+        '200':
+          description: No problem in retrieving the transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction:
+                    $ref: '#/components/schemas/Transaction'
+        '500':
+          description: Problem occured while accessing database
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err: 
+                    type: string
+          
+
+components:
+  schemas: 
+    Transaction: 
+      description: Model of Transactions.
+      required:
+        - _id
+        - transactionId
+        - date
+        - earned
+        - amount
+        - paymentMethod
+        - billAvailable
+        - transactionType
+      properties: 
+        _id: 
+          type: string
+          example: "5d75df56ba4b2e9tt79c849c"
+        transactionId: 
+          type: string
+          example: "jforfdgjodg"
+        date: 
+          type: string
+          example: "2019-09-09T05:12:54.553Z"
+        earned:
+          type: string
+          example: "earned"
+        amount: 
+          type: number
+          example: 500000
+        paymentMethod: 
+          type: string
+          example: "CIBC debit card"
+        store:
+          type: string
+          example: "GOOGLE"
+        city:
+          type: string
+          example: "Montreal"
+        billAvailable:
+          type: string
+          example: "Available"
+        transactionType:
+          type: string
+          example: "Income"
+        comments:
+          type: string
+          example: "My job at google"
+        thingsBought:
+          type: string
+          example: "none"
+        
+    

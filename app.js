@@ -3,6 +3,8 @@ const http=require("http")
 const express=require("express")
 const mongoose=require("mongoose")
 const dotenv=require("dotenv")
+const swaggerUi=require("swagger-ui-express")
+const swaggerDoc=require("./util/swagger.json")
 const bodyParser=require('body-parser')
 dotenv.config()
 
@@ -13,6 +15,7 @@ const app=express()
 
 //Creating middlewares
 app.use(bodyParser.json())
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDoc))
 app.use((req,res,next)=>{
     res.setHeader('Access-Control-Allow-Origin','*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
