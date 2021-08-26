@@ -27,10 +27,13 @@ exports.getStatus=(req,res,next)=>{
                 {$group: {_id: {earned:"$earned"},amount:{$sum:"$amount"}}}
             ])
             .then(status2Arr=>{
+                const q1=status2Arr.find(status=>{return status._id.earned==='earned'});
+                const q2=status2Arr.find(status=>{return status._id.earned==='spent'});
+
                 status2Obj={
                     earned: status2Arr.find(status=>{return status._id.earned==='earned'}),
                     spent: status2Arr.find(status=>{return status._id.earned==='spent'}),
-                    saved: {amount: status2Arr.find(status=>{return status._id.earned==='earned'}).amount-status2Arr.find(status=>{return status._id.earned==='spent'}).amount},
+                    saved: {amount: q1?q1.amount:0 - q2?q2.amount:0 },
                 }   
                 Transaction.aggregate([
                     {$match: {date: {$gte:new Date(currentYear,currentMonth,01),$lte:new Date(currentYear,currentMonth,currentDate,23,59)}}},
