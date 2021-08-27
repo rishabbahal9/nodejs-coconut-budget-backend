@@ -6,5 +6,5 @@ const router=express.Router()
 router.get('/',(req,res,next)=>{
     res.send("Status")
 })
-router.get('/getStatus',controller.getStatus)
+router.get('/getStatus/:dateObj',controller.getStatus)
 module.exports=router

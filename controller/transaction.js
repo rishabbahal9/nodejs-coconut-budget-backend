@@ -4,8 +4,6 @@ const lastDayOfMonth = (y,m)=>{
     return  new Date(y, m +1, 0).getDate();
 }
 exports.getMonthlyTransactions=(req,res,next)=>{
-    console.log('req.params.dateObj')
-    console.log(req.params.dateObj)
     dateNow=new Date(req.params.dateObj*1)
     currentYear=dateNow.getFullYear()
     currentMonth=dateNow.getMonth()

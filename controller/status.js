@@ -1,12 +1,16 @@
 const Transaction = require("../models/transaction")
-
+const lastDayOfMonth = (y,m)=>{
+    return  new Date(y, m +1, 0).getDate();
+}
 exports.getStatus=(req,res,next)=>{
-    dateNow=new Date()
+    console.log('req.params.dateObj')
+    console.log(req.params.dateObj)
+    dateNow=new Date(req.params.dateObj*1)
     currentYear=dateNow.getFullYear()
     currentMonth=dateNow.getMonth()
     currentDate=dateNow.getDate()
     Transaction.aggregate([
-        {$match: {date: {$gte:new Date(currentYear,currentMonth,01),$lte:new Date(currentYear,currentMonth,currentDate,23,59)}}},
+        {$match: {date: {$gte:new Date(currentYear,currentMonth,01),$lte:new Date(currentYear,currentMonth,lastDayOfMonth(currentYear,currentMonth),23,59)}}},
         {$group: {_id: {transactionType:"$transactionType"},amount:{$sum:"$amount"}}}
     ])
     .then(
@@ -23,7 +27,7 @@ exports.getStatus=(req,res,next)=>{
                 income: statusArr.find(status=>{return status._id.transactionType==='Income'})
             }
             Transaction.aggregate([
-                {$match: {date: {$gte:new Date(currentYear,currentMonth,01),$lte:new Date(currentYear,currentMonth,currentDate,23,59)}}},
+                {$match: {date: {$gte:new Date(currentYear,currentMonth,01),$lte:new Date(currentYear,currentMonth,lastDayOfMonth(currentYear,currentMonth),23,59)}}},
                 {$group: {_id: {earned:"$earned"},amount:{$sum:"$amount"}}}
             ])
             .then(status2Arr=>{
@@ -36,7 +40,7 @@ exports.getStatus=(req,res,next)=>{
                     saved: {amount: q1?q1.amount:0 - q2?q2.amount:0 },
                 }   
                 Transaction.aggregate([
-                    {$match: {date: {$gte:new Date(currentYear,currentMonth,01),$lte:new Date(currentYear,currentMonth,currentDate,23,59)}}},
+                    {$match: {date: {$gte:new Date(currentYear,currentMonth,01),$lte:new Date(currentYear,currentMonth,lastDayOfMonth(currentYear,currentMonth),23,59)}}},
                     {$group: {_id: {paymentMethod:"$paymentMethod"},amount:{$sum:"$amount"}}}
                 ])
                 .then(status3Arr=>{
