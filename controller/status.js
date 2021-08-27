@@ -20,6 +20,7 @@ exports.getStatus=(req,res,next)=>{
             statusObj={
                 homeRent: statusArr.find(status=>{return status._id.transactionType==='House rent'}),
                 phone: statusArr.find(status=>{return status._id.transactionType==='Phone'}),
+                internet: statusArr.find(status=>{return status._id.transactionType==='Internet'}),
                 fuel: statusArr.find(status=>{return status._id.transactionType==='Fuel'}),
                 grocery: statusArr.find(status=>{return status._id.transactionType==='Grocery'}),
                 myGrocery: statusArr.find(status=>{return status._id.transactionType==='MyGrocery'}),
@@ -33,11 +34,13 @@ exports.getStatus=(req,res,next)=>{
             .then(status2Arr=>{
                 const q1=status2Arr.find(status=>{return status._id.earned==='earned'});
                 const q2=status2Arr.find(status=>{return status._id.earned==='spent'});
+                const a=q1?q1.amount:0;
+                const b=q2?q2.amount:0;
 
                 status2Obj={
                     earned: status2Arr.find(status=>{return status._id.earned==='earned'}),
                     spent: status2Arr.find(status=>{return status._id.earned==='spent'}),
-                    saved: {amount: q1?q1.amount:0 - q2?q2.amount:0 },
+                    saved: {amount: a-b},
                 }   
                 Transaction.aggregate([
                     {$match: {date: {$gte:new Date(currentYear,currentMonth,01),$lte:new Date(currentYear,currentMonth,lastDayOfMonth(currentYear,currentMonth),23,59)}}},
