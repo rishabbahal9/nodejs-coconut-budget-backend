@@ -24,6 +24,8 @@ exports.getStatus=(req,res,next)=>{
                 fuel: statusArr.find(status=>{return status._id.transactionType==='Fuel'}),
                 grocery: statusArr.find(status=>{return status._id.transactionType==='Grocery'}),
                 myGrocery: statusArr.find(status=>{return status._id.transactionType==='MyGrocery'}),
+                Gymnasium: statusArr.find(status=>{return status._id.transactionType==='Gymnasium'}),
+                SelfInvestment: statusArr.find(status=>{return status._id.transactionType==='SelfInvestment'}),
                 others: statusArr.find(status=>{return status._id.transactionType==='Others'}),
                 income: statusArr.find(status=>{return status._id.transactionType==='Income'})
             }
