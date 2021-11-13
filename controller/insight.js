@@ -25,16 +25,16 @@ exports.netIncome = async (req, res, next) => {
     const incomeDataArr = [];
     const expenseDataArr = [];
     const netIncomeDataArr = [];
-    for (let month = 0; month < currentMonth; month++) {
+    for (let month = 0; month <= currentMonth; month++) {
       const data = await getMonthlyIncomeExpense(currentYear, month);
       const incomeAmount = data.find((x) => {
         return x._id.earned === "earned";
-      }).amount;
+      });
       const expenseAmount = data.find((x) => {
         return x._id.earned === "spent";
-      }).amount;
-      incomeDataArr.push(incomeAmount);
-      expenseDataArr.push(expenseAmount);
+      });
+      (incomeAmount==null || incomeAmount==undefined)?incomeDataArr.push(0):incomeDataArr.push(incomeAmount.amount);
+      (expenseAmount==null || expenseAmount==undefined)?expenseDataArr.push(0):expenseDataArr.push(expenseAmount.amount);
     }
 
     for (let i = 0; i < incomeDataArr.length; i++) {
