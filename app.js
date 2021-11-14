@@ -9,10 +9,11 @@ dotenv.config();
 const transactionRoutes = require("./routes/transaction");
 const statusRoutes = require("./routes/status");
 const insightRoutes = require("./routes/insight");
-
+const bodyParser=require('body-parser')
 const app = express();
 
 //Creating middlewares
+app.use(bodyParser.json())
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
