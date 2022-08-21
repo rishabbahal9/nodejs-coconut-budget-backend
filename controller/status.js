@@ -62,6 +62,9 @@ exports.getStatus = (req, res, next) => {
         others: statusArr.find((status) => {
           return status._id.transactionType === "Others";
         }),
+        businessExpense: statusArr.find((status) => {
+          return status._id.transactionType === "BusinessExpense";
+        }),
         income: statusArr.find((status) => {
           return status._id.transactionType === "Income";
         }),
